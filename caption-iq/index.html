@@ -1,6 +1,235 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caption IQ – Viral IQ</title>
+
+<style>
+:root{
+  --primary:#3b82f6;
+  --secondary:#22d3ee;
+  --bg:#020617;
+  --card:#0b1220;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#020617,#020617);
+  font-family:system-ui, sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* 🔧 MAIN FIX */
+.wrapper{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:24px 14px 40px;   /* left-right safe padding */
+}
+
+.container{
+  width:100%;
+  max-width:430px;         /* balanced width */
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:22px 20px;       /* left-right equal */
+  border:1px solid var(--border);
+  box-shadow:0 24px 48px rgba(0,0,0,0.65);
+}
+
+/* TEXT */
+h1{
+  text-align:center;
+  font-size:24px;
+  margin:0 0 6px;
+}
+
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  margin-top:14px;
+  font-weight:600;
+  font-size:15px;
+  color:#c7d2fe;
+}
+
+/* INPUTS */
+input, select{
+  width:100%;
+  padding:14px 14px;
+  font-size:16px;
+  border-radius:14px;
+  background:#020617;
+  color:var(--text);
+  border:1px solid var(--border);
+  margin-top:6px;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:15px;
+  font-size:17px;
+  font-weight:800;
+  border:none;
+  border-radius:16px;
+  margin-top:22px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#020617;
+}
+
+/* RESULT */
+.result{
+  display:none;
+  margin-top:22px;
+}
+
+.box{
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
+
+.box-title{
+  font-size:13px;
+  color:#38bdf8;
+  margin-bottom:6px;
+  font-weight:600;
+}
+
+.output{
+  font-size:15px;
+  line-height:1.6;
+  color:#e5e7eb;
+}
+
+.copy{
+  margin-top:10px;
+  background:#111827;
+  color:#22d3ee;
+  font-size:14px;
+  padding:10px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.footer{
+  text-align:center;
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:18px;
+}
+</style>
+</head>
+
 <body>
-Caption IQ Tool
+
+<div class="wrapper">
+  <div class="container">
+    <div class="card">
+
+      <h1>✍️ Caption IQ</h1>
+      <div class="subtitle">Captions aur hashtags jo reach badhaye</div>
+
+      <label>Reel / Video Topic</label>
+      <input id="topicInput" placeholder="Jaise: Self confidence, Business tips">
+
+      <label>Tone</label>
+      <select id="toneSelect">
+        <option>Motivational</option>
+        <option>Funny</option>
+        <option>Bold</option>
+        <option>Emotional</option>
+      </select>
+
+      <label>Language</label>
+      <select id="langSelect">
+        <option>Hindi</option>
+        <option>Hinglish</option>
+        <option>English</option>
+      </select>
+
+      <button onclick="generate()">✨ Caption Generate करें</button>
+
+      <div class="result" id="resultBox">
+
+        <div class="box">
+          <div class="box-title">Caption</div>
+          <div class="output" id="captionText"></div>
+          <div class="copy" onclick="copyText('captionText')">📋 Copy Caption</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Hashtags</div>
+          <div class="output" id="hashtagText"></div>
+          <div class="copy" onclick="copyText('hashtagText')">📋 Copy Hashtags</div>
+        </div>
+
+      </div>
+
+      <div class="footer">
+        Viral IQ · Caption Intelligence
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function generate(){
+  const topic = topicInput.value || "your reel";
+  const lang  = langSelect.value;
+
+  let caption="", hashtags="";
+
+  if(lang==="Hindi"){
+    caption=`"${topic} par ek baat yaad rakhna 🔥
+Consistency hi success ka secret hai.
+Is reel ko end tak dekho!"`;
+    hashtags="#reels #viralreel #motivation #hindireels #creator";
+  }else if(lang==="Hinglish"){
+    caption=`"${topic} ka ek hi rule hai 🚀
+Daily improve karo, results khud aayenge.
+Save & share this reel!"`;
+    hashtags="#reelsindia #creatorlife #viral #growth #content";
+  }else{
+    caption=`"${topic} is not about luck 🔥
+It's about consistency and clarity.
+Watch till the end!"`;
+    hashtags="#reels #viralvideo #contentcreator #growth #shorts";
+  }
+
+  captionText.innerText = caption;
+  hashtagText.innerText = hashtags;
+  resultBox.style.display = "block";
+}
+
+function copyText(id){
+  const text=document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text);
+  alert("Copied!");
+}
+</script>
+
 </body>
 </html>

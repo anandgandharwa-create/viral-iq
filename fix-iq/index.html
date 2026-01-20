@@ -1,6 +1,274 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix IQ – Viral IQ</title>
+
+<style>
+:root{
+  --primary:#3b82f6;
+  --secondary:#22d3ee;
+  --bg:#020617;
+  --card:#0b1220;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --good:#22c55e;
+  --warn:#facc15;
+  --bad:#ef4444;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:#020617;
+  font-family:system-ui, sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* LAYOUT */
+.wrapper{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:24px 14px 40px;
+}
+
+.container{
+  width:100%;
+  max-width:430px;
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:22px 20px;
+  border:1px solid var(--border);
+  box-shadow:0 24px 48px rgba(0,0,0,0.65);
+}
+
+/* TEXT */
+h1{
+  text-align:center;
+  font-size:24px;
+  margin:0 0 6px;
+}
+
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  margin-top:14px;
+  font-weight:600;
+  font-size:15px;
+  color:#c7d2fe;
+}
+
+/* INPUTS */
+select{
+  width:100%;
+  padding:14px;
+  font-size:16px;
+  border-radius:14px;
+  background:#020617;
+  color:var(--text);
+  border:1px solid var(--border);
+  margin-top:6px;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:15px;
+  font-size:17px;
+  font-weight:800;
+  border:none;
+  border-radius:16px;
+  margin-top:22px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#020617;
+}
+
+/* RESULT */
+.result{
+  display:none;
+  margin-top:22px;
+}
+
+.item{
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:12px;
+  background:#020617;
+}
+
+.item .title{
+  font-size:14px;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.item.good .title{color:var(--good);}
+.item.warn .title{color:var(--warn);}
+.item.bad .title{color:var(--bad);}
+
+.item .text{
+  font-size:14px;
+  line-height:1.6;
+  color:#e5e7eb;
+}
+
+.footer{
+  text-align:center;
+  font-size:12.5px;
+  color:var(--muted);
+  margin-top:18px;
+}
+</style>
+</head>
+
 <body>
-Fix IQ Tool
+
+<div class="wrapper">
+  <div class="container">
+    <div class="card">
+
+      <h1>🛠️ Fix IQ</h1>
+      <div class="subtitle">Post se pehle common galtiyaan pakdo</div>
+
+      <label>Reel Duration</label>
+      <select id="duration">
+        <option value="short">7–10 sec</option>
+        <option value="mid">11–20 sec</option>
+        <option value="long">21–30 sec</option>
+      </select>
+
+      <label>Music Type</label>
+      <select id="music">
+        <option value="trending">Trending</option>
+        <option value="normal">Normal</option>
+        <option value="none">No Music</option>
+      </select>
+
+      <label>Hook Strength</label>
+      <select id="hook">
+        <option value="strong">Strong</option>
+        <option value="medium">Medium</option>
+        <option value="weak">Weak</option>
+      </select>
+
+      <label>Text on Screen</label>
+      <select id="text">
+        <option value="balanced">Balanced</option>
+        <option value="less">Very Less</option>
+        <option value="more">Too Much</option>
+      </select>
+
+      <label>Posting Time</label>
+      <select id="time">
+        <option value="evening">Evening (6–9)</option>
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="night">Night</option>
+      </select>
+
+      <button onclick="analyze()">🔍 Mistakes Check करें</button>
+
+      <div class="result" id="resultBox"></div>
+
+      <div class="footer">
+        Viral IQ · Fix Intelligence
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function analyze(){
+  const r=document.getElementById("resultBox");
+  r.innerHTML="";
+  r.style.display="block";
+
+  // Duration
+  addItem(
+    duration.value==="short" ? "good" : duration.value==="mid" ? "warn" : "bad",
+    "Duration Check",
+    duration.value==="short"
+      ? "Short reels audience ko zyada hold karti hain."
+      : duration.value==="mid"
+      ? "Duration thodi zyada hai, hook strong rakhein."
+      : "Reel lambi hai, skip risk zyada."
+  );
+
+  // Music
+  addItem(
+    music.value==="trending" ? "good" : music.value==="normal" ? "warn" : "bad",
+    "Music Check",
+    music.value==="trending"
+      ? "Trending music reach ko boost karta hai."
+      : music.value==="normal"
+      ? "Normal music hai, trend try kar sakte hain."
+      : "Music nahi hai, engagement kam ho sakta hai."
+  );
+
+  // Hook
+  addItem(
+    hook.value==="strong" ? "good" : hook.value==="medium" ? "warn" : "bad",
+    "Hook Check",
+    hook.value==="strong"
+      ? "Strong hook hai, viewers rukenge."
+      : hook.value==="medium"
+      ? "Hook average hai, 3 sec aur strong banayein."
+      : "Weak hook, reel skip ho sakti hai."
+  );
+
+  // Text
+  addItem(
+    text.value==="balanced" ? "good" : text.value==="less" ? "warn" : "bad",
+    "On-screen Text",
+    text.value==="balanced"
+      ? "Text balanced hai, readability sahi."
+      : text.value==="less"
+      ? "Text kam hai, clarity add kar sakte hain."
+      : "Text zyada hai, viewer confuse ho sakta hai."
+  );
+
+  // Time
+  addItem(
+    time.value==="evening" ? "good" : "warn",
+    "Posting Time",
+    time.value==="evening"
+      ? "Evening best time hota hai reels ke liye."
+      : "Timing average hai, evening try karein."
+  );
+}
+
+function addItem(type,title,text){
+  const d=document.createElement("div");
+  d.className="item "+type;
+  d.innerHTML=`<div class="title">${icon(type)} ${title}</div>
+               <div class="text">${text}</div>`;
+  document.getElementById("resultBox").appendChild(d);
+}
+
+function icon(t){
+  if(t==="good") return "✅";
+  if(t==="warn") return "⚠️";
+  return "❌";
+}
+</script>
+
 </body>
 </html>

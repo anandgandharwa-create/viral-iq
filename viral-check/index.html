@@ -1,6 +1,280 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reel Performance Predictor</title>
+
+<style>
+:root{
+  --primary:#3b82f6;
+  --secondary:#22d3ee;
+  --bg:#020617;
+  --card:#0b1220;
+  --border:#1f2937;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+}
+
+body{
+  margin:0;
+  background:#020617;
+  font-family: system-ui, sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ✅ MAIN FIX AREA */
+.container{
+  max-width:520px;              /* UI चौड़ा */
+  margin:0 auto;
+  padding:40px 20px 80px;       /* ऊपर space + नीचे fill */
+  transform:scale(1.05);        /* Mobile पर overall zoom */
+  transform-origin: top center;
+}
+
+.card{
+  background:var(--card);
+  border-radius:24px;           /* थोड़ा बड़ा feel */
+  padding:28px;                 /* अंदर spacing बढ़ी */
+  border:1px solid var(--border);
+  box-shadow:0 25px 50px rgba(0,0,0,0.65);
+}
+
+h1{
+  text-align:center;
+  font-size:28px;               /* heading बड़ा */
+  margin-bottom:8px;
+}
+
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  font-size:16px;
+  margin-bottom:26px;
+}
+
+label{
+  display:block;
+  margin-top:16px;
+  font-weight:600;
+  font-size:16px;
+  color:#c7d2fe;
+}
+
+select{
+  width:100%;
+  padding:16px;
+  font-size:18px;               /* dropdown text बड़ा */
+  border-radius:16px;
+  background:#020617;
+  color:var(--text);
+  border:1px solid var(--border);
+  margin-top:8px;
+}
+
+button{
+  width:100%;
+  padding:18px;                 /* button बड़ा */
+  font-size:19px;
+  font-weight:800;
+  border:none;
+  border-radius:18px;
+  margin-top:22px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#020617;
+}
+
+.result{
+  display:none;
+  margin-top:26px;
+}
+
+.result-card{
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:22px;
+  text-align:center;
+}
+
+.score{
+  font-size:44px;               /* score बड़ा */
+  font-weight:900;
+}
+
+.level{
+  font-size:20px;
+  margin:10px 0;
+}
+
+.tips{
+  font-size:16px;
+  color:#dbeafe;
+  line-height:1.7;
+}
+
+.watermark{
+  font-size:14px;
+  color:#38bdf8;
+  margin-top:14px;
+}
+
+.lock{
+  background:#111827;
+  color:#facc15;
+  padding:14px;
+  border-radius:16px;
+  margin-top:16px;
+  font-size:15px;
+  text-align:center;
+}
+
+.share{
+  background:linear-gradient(135deg,#ec4899,#f97316);
+  color:white;
+}
+
+.footer{
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+  margin-top:28px;
+}
+
+canvas{display:none;}
+</style>
+</head>
+
 <body>
-Viral Check Tool
+
+<div class="container">
+<div class="card">
+
+<h1>📊 Reel Performance Predictor</h1>
+<div class="subtitle">Reel डालने से पहले smart analysis करें</div>
+
+<label>Reel Category</label>
+<select id="category">
+  <option value="12">Motivation</option>
+  <option value="15">Business</option>
+  <option value="14">Funny</option>
+  <option value="10">General</option>
+</select>
+
+<label>Reel Duration</label>
+<select id="duration">
+  <option value="22">7–10 सेकंड</option>
+  <option value="15">11–20 सेकंड</option>
+  <option value="8">21–30 सेकंड</option>
+</select>
+
+<label>Music Type</label>
+<select id="music">
+  <option value="22">Trending Music</option>
+  <option value="12">Normal Music</option>
+  <option value="5">No Music</option>
+</select>
+
+<label>Posting Time</label>
+<select id="time">
+  <option value="22">शाम (6–9)</option>
+  <option value="14">सुबह</option>
+  <option value="12">दोपहर</option>
+  <option value="10">रात</option>
+</select>
+
+<button onclick="predict()">🚀 Reel Check करें</button>
+
+<div class="result" id="resultBox">
+  <div class="result-card" id="resultCard">
+    <div class="score" id="scoreText"></div>
+    <div class="level" id="levelText"></div>
+    <div class="tips" id="tipsText"></div>
+    <div class="watermark">Powered by Reel Performance Predictor</div>
+  </div>
+
+  <div id="lockBox" class="lock" style="display:none">
+    🔒 Image Share Pro Users के लिए है
+  </div>
+
+  <button id="shareBtn" class="share" onclick="shareImage()">📸 Image बनाकर Share करें</button>
+</div>
+
+<button onclick="unlockPro()" style="margin-top:18px">⭐ Pro Unlock (Demo)</button>
+
+</div>
+
+<div class="footer">
+Free: 3 checks/day • Pro: Unlimited + Share
+</div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+/* 🔒 JS LOGIC — UNCHANGED */
+const LIMIT=3;
+let count=localStorage.getItem("count")||0;
+let pro=localStorage.getItem("pro")==="yes";
+
+function predict(){
+  if(!pro && count>=LIMIT){
+    alert("Free limit खत्म हो गई है. Pro unlock करें.");
+    return;
+  }
+  if(!pro){
+    count++;
+    localStorage.setItem("count",count);
+  }
+
+  let score=+category.value + +duration.value + +music.value + +time.value;
+  if(score>100) score=100;
+
+  let level="Low ❌",tips="Trending music जोड़ें",color="#ef4444";
+  if(score>=75){level="High 🔥";tips="Viral chance high";color="#22c55e";}
+  else if(score>=50){level="Medium ⚠️";tips="Hook improve करें";color="#facc15";}
+
+  scoreText.innerText=score+"/100";
+  scoreText.style.color=color;
+  levelText.innerText="Viral Chance: "+level;
+  tipsText.innerText=tips;
+  resultBox.style.display="block";
+
+  if(pro){
+    shareBtn.style.display="block";
+    lockBox.style.display="none";
+  }else{
+    shareBtn.style.display="none";
+    lockBox.style.display="block";
+  }
+}
+
+function unlockPro(){
+  localStorage.setItem("pro","yes");
+  alert("🎉 Pro Unlocked (Demo)");
+}
+
+function shareImage(){
+  const c=document.getElementById("canvas");
+  const ctx=c.getContext("2d");
+  c.width=420;c.height=320;
+  ctx.fillStyle="#020617";ctx.fillRect(0,0,420,320);
+  ctx.fillStyle="#fff";ctx.font="bold 26px sans-serif";
+  ctx.fillText("Reel Performance Report",30,50);
+  ctx.font="bold 42px sans-serif";
+  ctx.fillText(scoreText.innerText,150,125);
+  ctx.font="18px sans-serif";
+  ctx.fillText(levelText.innerText,110,175);
+  ctx.font="14px sans-serif";
+  ctx.fillText("Powered by Reel Performance Predictor",70,260);
+
+  c.toBlob(b=>{
+    const f=new File([b],"reel-score.png",{type:"image/png"});
+    navigator.share({files:[f],title:"Reel Score"});
+  });
+}
+</script>
+
 </body>
 </html>

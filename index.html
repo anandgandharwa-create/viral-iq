@@ -31,6 +31,20 @@ a{
 </head>
 
 <body>
+<button id="installBtn" style="
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:14px 18px;
+  border-radius:50px;
+  border:none;
+  background:#facc15;
+  color:#000;
+  font-weight:700;
+  display:none;
+  z-index:999;">
+Install App
+</button>
 
 <h1>Viral IQ</h1>
 <p>Reel post karne se pehle apni reach check karein</p>
@@ -43,6 +57,21 @@ a{
 <p style="margin-top:40px;font-size:13px;color:#facc15;">
 © 2026 Viral IQ · Smart Tools for Creators
 </p>
+<script>
+let deferredPrompt;
+const btn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  btn.style.display = "block";
+});
+
+btn.addEventListener("click", function(){
+  deferredPrompt.prompt();
+  btn.style.display = "none";
+});
+</script>
 
 </body>
 </html>

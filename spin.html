@@ -3,15 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>भाव चयन</title>
-<link rel="stylesheet" href="css/style.css">
+<title>भाव चुनें</title>
+
+<style>
+body{
+margin:0;
+font-family:system-ui, sans-serif;
+background:#0a1230;
+color:#ffffff;
+text-align:center;
+}
+
+.container{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+h1{
+font-size:26px;
+margin-bottom:20px;
+}
+
+/* POINTER */
+#pointer{
+width:0;
+height:0;
+border-left:14px solid transparent;
+border-right:14px solid transparent;
+border-bottom:22px solid #fff;
+margin-bottom:10px;
+}
+
+/* WHEEL */
+#wheel{
+width:260px;
+height:260px;
+border-radius:50%;
+background:conic-gradient(
+red, orange, yellow, green, cyan, blue, violet, pink, red
+);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:transform 4s cubic-bezier(.17,.67,.14,.99);
+}
+
+#wheel span{
+background:#000;
+padding:8px 14px;
+border-radius:20px;
+font-size:14px;
+}
+
+button{
+margin-top:30px;
+padding:14px 28px;
+font-size:16px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+color:#fff;
+cursor:pointer;
+}
+
+button:active{
+transform:scale(0.96);
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
 <h1>भाव चुनें</h1>
 
 <div id="pointer"></div>
+
 <div id="wheel">
 <span id="wheelText">स्पिन करें</span>
 </div>
@@ -19,6 +90,27 @@
 <button onclick="spinWheel()">स्पिन करें</button>
 </div>
 
-<script src="js/app.js"></script>
+<script>
+const emotions=[
+"जीवन","श्वास","शरीर","परिवार","प्रकृति",
+"संघर्ष","आज का दिन","स्वयं","अज्ञात कृपा"
+];
+
+function spinWheel(){
+const wheel=document.getElementById("wheel");
+const text=document.getElementById("wheelText");
+
+let deg=Math.floor(2000+Math.random()*2000);
+wheel.style.transform="rotate("+deg+"deg)";
+
+let emotion=emotions[Math.floor(Math.random()*emotions.length)];
+
+setTimeout(()=>{
+text.innerText=emotion;
+window.location.href="meter.html";
+},4200);
+}
+</script>
+
 </body>
 </html>

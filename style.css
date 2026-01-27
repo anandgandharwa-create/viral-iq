@@ -78,3 +78,71 @@ padding:20px;
 border-radius:20px;
 background:rgba(255,255,255,0.08);
 }
+/* ===== HOME PAGE DARK BLUE THEME ===== */
+
+.home{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:
+radial-gradient(circle at top, #1e3c72, #0a0f2c 60%);
+overflow:hidden;
+}
+
+.home::before{
+content:"";
+position:absolute;
+width:400px;
+height:400px;
+background:radial-gradient(circle, #00f2ff, transparent 60%);
+top:-120px;
+left:-120px;
+opacity:0.35;
+}
+
+.home::after{
+content:"";
+position:absolute;
+width:450px;
+height:450px;
+background:radial-gradient(circle, #ff00cc, transparent 60%);
+bottom:-150px;
+right:-150px;
+opacity:0.25;
+}
+
+.home-card{
+position:relative;
+z-index:2;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+padding:40px 30px;
+border-radius:26px;
+max-width:360px;
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+}
+
+.home h1{
+font-size:28px;
+margin-bottom:14px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.home p{
+font-size:15px;
+line-height:1.6;
+opacity:0.9;
+}
+
+.home button{
+margin-top:30px;
+width:100%;
+font-size:17px;
+padding:16px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc,#7928ca);
+box-shadow:0 0 18px rgba(0,242,255,0.5);
+}
+

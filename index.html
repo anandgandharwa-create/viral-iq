@@ -1,77 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Viral IQ</title>
-
-<link rel="manifest" href="manifest.json">
-
-<style>
-body{
-  margin:0;
-  font-family:system-ui;
-  background:#020617;
-  color:white;
-  text-align:center;
-  padding:40px 16px;
-}
-a{
-  display:block;
-  margin:16px 0;
-  padding:16px;
-  background:black;
-  color:white;
-  text-decoration:none;
-  border-radius:14px;
-  font-size:18px;
-  font-weight:600;
-}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>कृतज्ञता तरंग</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-<button id="installBtn" style="
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  padding:14px 18px;
-  border-radius:50px;
-  border:none;
-  background:#facc15;
-  color:#000;
-  font-weight:700;
-  display:none;
-  z-index:999;">
-Install App
+
+<div class="container">
+<h1>कृतज्ञता तरंग सक्रिय करें</h1>
+<p>आप जिस भाव में जाते हैं, वही आपकी वास्तविकता बनता है</p>
+<button onclick="location.href='spin.html'">
+कृतज्ञता प्रारंभ करें
 </button>
-
-<h1>Viral IQ</h1>
-<p>Reel post karne se pehle apni reach check karein</p>
-
-<a href="viral-check/">Viral Check</a>
-<a href="caption-iq/">Caption IQ</a>
-<a href="hook-iq/">Hook IQ</a>
-<a href="fix-iq/">Fix IQ</a>
-
-<p style="margin-top:40px;font-size:13px;color:#facc15;">
-© 2026 Viral IQ · Smart Tools for Creators
-</p>
-<script>
-let deferredPrompt;
-const btn = document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt", function(e){
-  e.preventDefault();
-  deferredPrompt = e;
-  btn.style.display = "block";
-});
-
-btn.addEventListener("click", function(){
-  deferredPrompt.prompt();
-  btn.style.display = "none";
-});
-</script>
+</div>
 
 </body>
 </html>

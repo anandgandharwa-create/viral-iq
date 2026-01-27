@@ -18,6 +18,61 @@
 </button>
 </div>
 
-<script src="js/app.js"></script>
+<script>
+let level = Number(localStorage.getItem("level")) || 50;
+
+/* MESSAGE BY LEVEL */
+let msg="";
+if(level < 40){
+msg="आप स्वीकार की अवस्था में हैं। यहीं से परिवर्तन प्रारंभ होता है।";
+}
+else if(level < 80){
+msg="आपकी कृतज्ञता आपके चारों ओर संतुलन और शांति बना रही है।";
+}
+else{
+msg="आप अनुग्रह के क्षेत्र में प्रवेश कर चुके हैं। अब कुछ माँगने की आवश्यकता नहीं।";
+}
+document.getElementById("msg").innerText = msg;
+
+/* QUOTES BANK */
+const quotesLow = [
+"स्वीकार ही शांति का पहला द्वार है।",
+"जो है, उसे स्वीकार करना भी एक साधना है।",
+"शांत होने से पहले रुकना आवश्यक होता है।"
+];
+
+const quotesMid = [
+"कृतज्ञता संतुलन को जन्म देती है।",
+"जहाँ धन्यवाद है, वहाँ तनाव नहीं टिकता।",
+"आप सही दिशा में बह रहे हैं।"
+];
+
+const quotesHigh = [
+"कृतज्ञता के बाद कुछ माँगना नहीं पड़ता।",
+"अनुग्रह अपने आप उतरता है।",
+"आप अस्तित्व की लय में हैं।"
+];
+
+/* PICK RANDOM QUOTE */
+let quote="";
+if(level < 40){
+quote = quotesLow[Math.floor(Math.random()*quotesLow.length)];
+}
+else if(level < 80){
+quote = quotesMid[Math.floor(Math.random()*quotesMid.length)];
+}
+else{
+quote = quotesHigh[Math.floor(Math.random()*quotesHigh.length)];
+}
+
+/* SET QUOTE */
+document.querySelector(".quote").innerText = "“" + quote + "”";
+
+/* ENERGY BAR ANIMATION */
+setTimeout(()=>{
+document.getElementById("fill").style.width = level + "%";
+},300);
+</script>
+
 </body>
 </html>

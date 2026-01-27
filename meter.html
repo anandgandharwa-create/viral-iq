@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>कृतज्ञता मीटर</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>कृतज्ञता ऊर्जा स्तर</h1>
+<p>इस क्षण आप कितनी गहराई से कृतज्ञता महसूस कर रहे हैं?</p>
+
+<input type="range" min="0" max="100" value="50"
+id="level" oninput="updateValue(this.value)">
+<p><span id="val">50</span> / 100</p>
+
+<button onclick="showResult()">परिणाम देखें</button>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -3,22 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>कृतज्ञता मीटर</title>
-<link rel="stylesheet" href="css/style.css">
+<title>कृतज्ञता ऊर्जा स्तर</title>
+
+<style>
+body{
+margin:0;
+font-family:system-ui, sans-serif;
+background:radial-gradient(circle at top, #1e3c72, #0a1230 65%);
+color:#fff;
+}
+
+.container{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+border-radius:28px;
+padding:32px 26px 40px;
+max-width:380px;
+width:100%;
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+text-align:center;
+}
+
+h1{
+font-size:26px;
+margin-bottom:14px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+p{
+font-size:15px;
+line-height:1.6;
+opacity:0.9;
+margin-bottom:22px;
+}
+
+/* ===== HALF CIRCLE METER ===== */
+.meter-wrap{
+position:relative;
+width:240px;
+height:120px;
+margin:10px auto 18px;
+overflow:hidden;
+}
+
+.meter-bg{
+width:240px;
+height:240px;
+border-radius:50%;
+background:rgba(255,255,255,0.15);
+position:absolute;
+bottom:0;
+left:0;
+}
+
+.meter-fill{
+width:240px;
+height:240px;
+border-radius:50%;
+position:absolute;
+bottom:0;
+left:0;
+background:conic-gradient(
+#ff3b3b 0deg,
+#ff9f00 60deg,
+#ffee00 120deg,
+#00ff9d 180deg,
+#00f2ff 240deg,
+#7928ca 300deg,
+#ff00cc 360deg
+);
+clip-path:inset(50% 0 0 0);
+transform:rotate(-180deg);
+transition:transform 0.8s ease;
+}
+
+/* VALUE */
+.value{
+font-size:22px;
+margin-top:6px;
+}
+
+/* SLIDER */
+input[type=range]{
+-webkit-appearance:none;
+width:100%;
+margin-top:18px;
+height:6px;
+border-radius:10px;
+background:rgba(255,255,255,0.3);
+outline:none;
+}
+
+input[type=range]::-webkit-slider-thumb{
+-webkit-appearance:none;
+width:22px;
+height:22px;
+border-radius:50%;
+background:#00f2ff;
+cursor:pointer;
+}
+
+/* BUTTON */
+button{
+margin-top:26px;
+width:100%;
+padding:15px;
+font-size:16px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+color:#fff;
+cursor:pointer;
+}
+
+button:active{
+transform:scale(0.96);
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-<h1>कृतज्ञता ऊर्जा स्तर</h1>
-<p>इस क्षण आप कितनी गहराई से कृतज्ञता महसूस कर रहे हैं?</p>
+  <div class="card">
+    <h1>कृतज्ञता ऊर्जा स्तर</h1>
 
-<input type="range" min="0" max="100" value="50"
-id="level" oninput="updateValue(this.value)">
-<p><span id="val">50</span> / 100</p>
+    <p>
+      इस क्षण आप कितनी गहराई से<br>
+      कृतज्ञता महसूस कर रहे हैं?
+    </p>
 
-<button onclick="showResult()">परिणाम देखें</button>
+    <!-- HALF CIRCLE -->
+    <div class="meter-wrap">
+      <div class="meter-bg"></div>
+      <div class="meter-fill" id="fill"></div>
+    </div>
+
+    <div class="value">
+      <span id="val">50</span> / 100
+    </div>
+
+    <input type="range" min="0" max="100" value="50"
+      id="level" oninput="updateMeter(this.value)">
+
+    <button onclick="goResult()">
+      परिणाम देखें
+    </button>
+  </div>
 </div>
 
-<script src="js/app.js"></script>
+<script>
+function updateMeter(v){
+document.getElementById("val").innerText = v;
+
+/* rotate from -180deg to 0deg */
+let deg = -180 + (v * 1.8);
+document.getElementById("fill").style.transform =
+"rotate("+deg+"deg)";
+}
+
+/* INIT */
+updateMeter(50);
+
+function goResult(){
+let level=document.getElementById("level").value;
+localStorage.setItem("level",level);
+window.location.href="result.html";
+}
+</script>
+
 </body>
 </html>

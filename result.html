@@ -3,117 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>परिणाम</title>
-<link rel="stylesheet" href="css/style.css">
+<title>कृतज्ञता परिणाम</title>
+
+<style>
+body{
+margin:0;
+font-family:system-ui, sans-serif;
+background:radial-gradient(circle at top, #1e3c72, #0a1230 65%);
+color:#ffffff;
+}
+
+.container{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(14px);
+border-radius:28px;
+padding:34px 28px 38px;
+max-width:380px;
+width:100%;
+box-shadow:0 0 40px rgba(0,0,0,0.6);
+text-align:center;
+}
+
+h1{
+font-size:26px;
+margin-bottom:16px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.energy{
+font-size:14px;
+opacity:0.85;
+margin-bottom:8px;
+}
+
+.bar{
+width:100%;
+height:10px;
+background:rgba(255,255,255,0.18);
+border-radius:20px;
+overflow:hidden;
+margin-bottom:22px;
+}
+
+.fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00f2ff,#ff00cc,#7928ca);
+transition:width 1.2s ease;
+}
+
+.message{
+font-size:16px;
+line-height:1.6;
+margin-bottom:18px;
+}
+
+.quote{
+font-size:14px;
+opacity:0.9;
+margin-bottom:28px;
+}
+
+button{
+width:100%;
+padding:15px;
+font-size:16px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00f2ff,#ff00cc);
+color:#fff;
+cursor:pointer;
+}
+
+button:active{
+transform:scale(0.96);
+}
+</style>
 </head>
-<body onload="loadResult()">
+
+<body>
 
 <div class="container">
-<h1>कृतज्ञता परिणाम</h1>
+  <div class="card">
+    <h1>कृतज्ञता परिणाम</h1>
 
-<div class="result-box" id="resultText"></div>
+    <div class="energy">आपकी कृतज्ञता ऊर्जा</div>
 
-<button onclick="location.href='spin.html'">
-पुनः अनुभव करें
-</button>
+    <div class="bar">
+      <div class="fill" id="fill"></div>
+    </div>
+
+    <div class="message" id="msg"></div>
+
+    <div class="quote" id="quote"></div>
+
+    <button onclick="location.href='spin.html'">
+      पुनः अनुभव करें
+    </button>
+  </div>
 </div>
 
 <script>
 let level = Number(localStorage.getItem("level")) || 50;
 
-/* ===== MESSAGE BY ENERGY LEVEL ===== */
+/* MESSAGE */
 let msg="";
 if(level < 40){
 msg="आप स्वीकार की अवस्था में हैं। यहीं से परिवर्तन प्रारंभ होता है।";
 }
 else if(level < 80){
-msg="आपकी कृतज्ञता आपके चारों ओर संतुलन और शांति बना रही है।";
+msg="आपकी कृतज्ञता संतुलन और शांति बना रही है।";
 }
 else{
 msg="आप अनुग्रह के क्षेत्र में प्रवेश कर चुके हैं। अब कुछ माँगने की आवश्यकता नहीं।";
 }
 document.getElementById("msg").innerText = msg;
 
-/* ===== TIME DETECTION ===== */
-let hour = new Date().getHours();
-let timeSlot = "";
+/* TIME */
+let h = new Date().getHours();
+let time = h < 10 ? "morning" : h < 17 ? "day" : h < 21 ? "evening" : "night";
 
-if(hour >= 4 && hour < 10) timeSlot = "morning";
-else if(hour >= 10 && hour < 17) timeSlot = "day";
-else if(hour >= 17 && hour < 21) timeSlot = "evening";
-else timeSlot = "night";
-
-/* ===== QUOTES DATABASE ===== */
+/* QUOTES */
 const quotes = {
 low:{
-morning:[
-"आज का दिन स्वीकार से शुरू करें।",
-"शांत श्वास ही पहला धन्यवाद है।"
-],
-day:[
-"जो अभी है, वही पर्याप्त है।",
-"स्वीकार में ही ऊर्जा बचती है।"
-],
-evening:[
-"दिन जैसा भी रहा, उसने कुछ सिखाया है।",
-"थकान भी एक संकेत है — रुकने का।"
-],
-night:[
-"सब छोड़कर सो जाना भी कृतज्ञता है।",
-"जो नहीं हुआ, उसके लिए स्वयं को दोष न दें।"
-]
+morning:["आज का दिन स्वीकार से शुरू करें।"],
+day:["जो है, वही पर्याप्त है।"],
+evening:["दिन ने आपको कुछ दिया है।"],
+night:["सब छोड़कर विश्राम करें।"]
 },
 mid:{
-morning:[
-"कृतज्ञता दिन को संतुलन देती है।",
-"आज आप सही लय में हैं।"
-],
-day:[
-"धन्यवाद की तरंग आपके चारों ओर है।",
-"आप अनावश्यक बोझ छोड़ चुके हैं।"
-],
-evening:[
-"दिन की सीख को प्रणाम करें।",
-"आज का अनुभव पर्याप्त है।"
-],
-night:[
-"शांति के साथ विश्राम करें।",
-"आज की कृतज्ञता कल की शक्ति बनेगी।"
-]
+morning:["कृतज्ञता दिन को संतुलन देती है।"],
+day:["आप सही लय में हैं।"],
+evening:["अनुभव को धन्यवाद दें।"],
+night:["शांति में उतरें।"]
 },
 high:{
-morning:[
-"आज कुछ माँगने की आवश्यकता नहीं।",
-"जो है, वही पूर्ण है।"
-],
-day:[
-"आप कर्म में होकर भी मुक्त हैं।",
-"अनुग्रह बिना बुलाए आया है।"
-],
-evening:[
-"सब कुछ अपनी जगह बैठ रहा है।",
-"आप अस्तित्व की लय में हैं।"
-],
-night:[
-"अब स्वयं को सौंप दीजिए।",
-"कृतज्ञता ने दिन को पूर्ण किया।"
-]
+morning:["आज कुछ माँगने की आवश्यकता नहीं।"],
+day:["आप कर्म में होकर भी मुक्त हैं।"],
+evening:["सब अपनी जगह बैठ रहा है।"],
+night:["अब स्वयं को सौंप दीजिए।"]
 }
 };
 
-/* ===== PICK QUOTE ===== */
 let band = level < 40 ? "low" : level < 80 ? "mid" : "high";
-let list = quotes[band][timeSlot];
-let quote = list[Math.floor(Math.random() * list.length)];
+let quote = quotes[band][time][0];
+document.getElementById("quote").innerText = "“" + quote + "”";
 
-document.querySelector(".quote").innerText = "“" + quote + "”";
-
-/* ===== ENERGY BAR ===== */
+/* BAR ANIMATION */
 setTimeout(()=>{
 document.getElementById("fill").style.width = level + "%";
 },300);
 </script>
-
 
 </body>
 </html>
